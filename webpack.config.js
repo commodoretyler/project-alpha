@@ -3,20 +3,18 @@ const webpack               = require('webpack');
 const MiniCssExtractPlugin  = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin     = require('html-webpack-plugin');
 
-const entryPreloaders = [
-  '@babel/polyfill'
-];
+const entryPreloaders = [];
 
 const mode = process.env.NODE_ENV || 'development';
 
 if (mode !== 'production') {
-  entryPreloaders.push('webpack-hot-middleware/client?reload=true');
-  entryPreloaders.push('react-hot-loader/patch');
+  // entryPreloaders.push('webpack-hot-middleware/client?reload=true');
+  // entryPreloaders.push('react-hot-loader/patch');
 }
 
 module.exports = {
   devServer: {
-    port: 3003
+    port: 3004
   },
   context: path.resolve(__dirname, 'src'),
   devtool: 'cheap-eval-source-map',
@@ -26,12 +24,13 @@ module.exports = {
       SRC: path.resolve(__dirname, 'src'),
       Reducers: path.resolve(__dirname, 'src/reducers'),
       Sagas: path.resolve(__dirname, 'src/sagas')
-    }
+    },
+    extensions: ['.ts', '.tsx']
   },
   entry: {
     app: [
       ...entryPreloaders,
-      './index.js'
+      'index.tsx'
     ],
   },
   output: {
@@ -65,18 +64,25 @@ module.exports = {
         ]
       },
       {
-        test: /\.jsx?$/,
-        include: [
-          path.resolve(__dirname, './node_modules/ca-ui-kit/'),
-          path.resolve(__dirname, './src')
-        ],
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env', '@babel/react']
-          }
-        }
+        test: /\.ts(x?)$/,
+        exclude: /node_modules/,
+        use: [
+          { loader: 'ts-loader' }
+        ]
       },
+      // {
+      //   test: /\.jsx?$/,
+      //   include: [
+      //     path.resolve(__dirname, './node_modules/ca-ui-kit/'),
+      //     path.resolve(__dirname, './src')
+      //   ],
+      //   use: {
+      //     loader: 'babel-loader',
+      //     options: {
+      //       presets: ['@babel/preset-env', '@babel/react']
+      //     }
+      //   }
+      // },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
         use: [{
@@ -86,8 +92,17 @@ module.exports = {
             outputPath: 'fonts/'
           }
         }]
+      },
+      {
+        enforce: 'pre',
+        test: /\.js$/,
+        loader: 'source-map-loader'
       }
     ]
+  },
+  externals: {
+    react: 'React',
+    'react-dom': 'ReactDOM'
   }
 };
 
