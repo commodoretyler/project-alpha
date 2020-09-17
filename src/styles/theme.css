@@ -1,0 +1,11 @@
+.light {
+  --theme-bg: #cccccc;
+  --theme-title: #333333;
+  --theme-primary: #2A56EB;
+}
+
+.dark {
+  --theme-bg: #333333;
+  --theme-title: #cccccc;
+  --theme-primary: #EB532A;
+}
