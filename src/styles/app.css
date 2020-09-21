@@ -1,10 +1,10 @@
 @import url(./theme.css);
 
 :root {
-  --main-bg-color: #eee;
+  --main-bg-color: #abc123;
   --main-text-color: #0a6885;
 
-  --header-height: 65px;
+  --header-height: 85px;
 }
 
 body {
@@ -18,8 +18,8 @@ h1 {
 }
 
 h2 {
-  color: var(--secondary-text-color, #bb1b1b);
-  /* color: var(--theme-title, #bb1b1b);*/
+  /*color: var(--secondary-text-color, #bb1b1b);*/
+  color: var(--secondary-text-color, var(--theme-title), #bb1b1b);
 }
 
 .animate {
@@ -92,7 +92,7 @@ h2 {
     var(--theme-bg, --main-bg-color);
   display: flex;
   flex-direction: column;
-  margin: 10% auto;
+  margin: var(--header-height) auto auto;
   max-width: 60%;
   padding: 2rem;
 }
@@ -122,6 +122,34 @@ h2 {
   font-size: calc(var(--header-height) * .35);
 }
 
+.pie {
+  position: relative;
+  display: inline-block;
+  background-color: #d44;
+  background-image: conic-gradient(
+    rgba(0,0,0,0) calc(3.6deg * var(--percent)),
+    rgba(0,0,0,1) calc(3.6deg * var(--percent))
+  );
+  background-blend-mode: overlay;
+  background-position: 50% 50%;
+  background-size: 150%; /* oversize bg image to prevent "underdraw" */
+  width: 3.75em;
+  height: 3.75em;
+  border-radius: 50%;
+}
+
+/* show the percentage (thanks to Ana Tudor for the counter() trick) */
+.pie--value::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  counter-reset: percent var(--percent);
+  content: counter(percent) "%";
+  color: #fff;
+  text-shadow: 0 0 1px #000;
+}
+
 label {
   display: block;
   margin-bottom: .125rem;
@@ -138,4 +166,8 @@ input {
   display: block;
   margin-bottom: .25rem;
   padding: .5rem 1rem;
+}
+
+.chart {
+  margin: 2rem auto;
 }
