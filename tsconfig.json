@@ -15,7 +15,7 @@
     "module": "esnext",
     "moduleResolution": "node",
     "noImplicitAny": true,
-    "outDir": "./dist/",
+    "outDir": "./build/",
     "sourceMap": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,

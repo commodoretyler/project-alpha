@@ -5,20 +5,24 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = {
   entry: './index.tsx',
   devServer: {
-    port: 3004,
-    contentBase: './dist'
+    port: 3001,
+    contentBase: './build',
+    hot: true,
+    open: 'Google Chrome',
+    watchOptions: {
+      ignored: /node_modules/
+    }
   },
   context: path.resolve(__dirname, 'src'),
   devtool: 'inline-source-map',
-  mode: 'development',
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   module: {
     rules: [
       {
-        test: /\.(scss|css)$/,
+        test: /\.css$/,
         use: [
           { loader: 'style-loader' },
-          { loader: 'css-loader' },
-          { loader: 'sass-loader' }
+          { loader: 'css-loader' }
         ]
       },
       {
@@ -51,12 +55,11 @@ module.exports = {
     }),
   ],
   output: {
-    filename: '[name].js',
-    path: path.resolve(__dirname, 'dist')
+    filename: '[name].[contentHash].js',
+    path: path.resolve(__dirname, 'build')
   },
   optimization: {
-    namedModules: true,      // NamedModulesPlugin
-    noEmitOnErrors: false    // NoEmitOnErrorsPlugin
+    emitOnErrors: true
   }
 };
 
